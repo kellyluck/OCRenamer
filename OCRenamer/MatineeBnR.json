@@ -1,0 +1,28 @@
+{
+  "Rules": [
+    {
+      "_comment":  "Simple text replace",
+      "Find": [
+        "Bob And Ray Show ",
+        "Matineewithbobray-"
+      ],
+      "Replace": "Matinee with Bob & Ray-"
+    },
+    {
+      "_comment":  "Finds 6 consecutive digits, breaks them into 3 sets of 2, and reformats them as a moer readable date",
+      "Find": [
+        "(?<!\\d)(\\d{2})(\\d{2})(\\d{2})(?!\\d)"
+      ],
+      "Replace": "19$1-$2-$3-"
+    },
+    {
+      "_comment":  "Finds a capital letter immediately preceded by a lower-case, and inserts a space ('FooBar' -> 'Foo Bar')",
+      "Find": [
+        "(?<=[a-z])(?=[A-Z])"
+      ],
+      "Replace": " "
+    }
+  ]
+}
+
+
