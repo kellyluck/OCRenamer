@@ -35,7 +35,7 @@ public partial class Form1 : Form
                 }
             }
 
-            System.Diagnostics.Debug.WriteLine($"{file.FileNameWithoutExtension} is now {baseName}");
+            System.Diagnostics.Debug.WriteLine($"'{file.FileNameWithoutExtension}' is now '{baseName}'.");
         }
     }
 }
