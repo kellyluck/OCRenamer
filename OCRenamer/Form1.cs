@@ -1,8 +1,13 @@
 using OCRenamer.Models;
-using System.Data;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace OCRenamer;
+
+/* TODO:
+ * multi-column log
+ * Filter by file extension
+ */
 
 public partial class Form1 : Form
 {
@@ -13,17 +18,36 @@ public partial class Form1 : Form
 
     private void button1_Click(object sender, EventArgs e)
     {
-        Go("F:\\Documents\\Source\\Repos\\kellyluck\\OCRenamer\\OCRenamer\\MatineeBnR.json",
-           "I:\\Radio Programs\\Bob & Ray\\Matinee With Bob Ray\\*.mp3",
-           "I:\\Radio Programs\\Bob & Ray\\Matinee With Bob Ray\\RenameUs\\",
-           true);
+        if (String.IsNullOrEmpty(txtRulesetFilename.Text))
+        {
+            MessageBox.Show("Please select a ruleset file first.");
+            return;
+        }
+
+        if (String.IsNullOrEmpty(txtDirectory.Text))
+        {
+            MessageBox.Show("Please select a directory first.");
+        }
+
+        if (rbCopy.Checked && String.IsNullOrEmpty(txtCopyDirectory.Text)) {
+            MessageBox.Show("Please select the directory you want to copy to.");
+        }
+
+        string destination = rbCopy.Checked ? txtCopyDirectory.Text : txtDirectory.Text;
+
+        Go(txtRulesetFilename.Text, txtDirectory.Text,destination,chkOverwrite.Checked,chkDryRun.Checked);
+        //Go("F:\\Documents\\Source\\Repos\\kellyluck\\OCRenamer\\OCRenamer\\MatineeBnR.json",
+        //   "I:\\Radio Programs\\Bob & Ray\\Matinee With Bob Ray\\*.mp3",
+        //   "I:\\Radio Programs\\Bob & Ray\\Matinee With Bob Ray\\RenameUs\\",
+        //   true);
 
     }
 
-    public void Go(string ruleSetPath, string filesPath, string destinationPath,bool overwriteExisting)
+    public void Go(string ruleSetPath, string filesPath, string destinationPath, bool overwriteExisting,bool dryRun)
     {
         RuleSet ruleSet = RuleLoader.LoadRulesFromJson(ruleSetPath);
-        List<FilenameInfo> files = FileFinder.GetFilesFromPattern(filesPath);
+        List<FilenameInfo> files = FileFinder.GetFilesFromPattern(filesPath + "\\*.*");
+        lstLog.Items.Clear();
 
         foreach (FilenameInfo file in files)
         {
@@ -31,34 +55,93 @@ public partial class Form1 : Form
 
             foreach (RenameRule renameRule in ruleSet.Rules)
             {
-                foreach(string match in renameRule.Find)
+                foreach (string match in renameRule.Find)
                 {
                     baseName = Regex.Replace(baseName, match, renameRule.Replace);
                 }
             }
 
-            System.Diagnostics.Debug.WriteLine($"'{file.FileNameWithoutExtension}' is now '{baseName}'.");
+            string log=($"'{file.FileNameWithoutExtension}' is now '{baseName}'.");
+            lstLog.Items.Add(log);
+            lstLog.SelectedIndex =lstLog.Items.Count - 1;
+            lstLog.Invalidate();
+
             string newPath = Path.Combine(destinationPath, $"{baseName}.{file.Extension}");
 
-            if (file.DirectoryPath.Equals(destinationPath))
+            if (!dryRun)
             {
-                // direct rename
-                if ((!File.Exists(newPath)) || (File.Exists(newPath) && overwriteExisting))
-                    File.Copy(file.FullPath, newPath, overwriteExisting);
+                if (file.DirectoryPath.Equals(destinationPath))
+                {
+                    // direct rename
+                    if ((!File.Exists(newPath)) || (File.Exists(newPath) && overwriteExisting))
+                        File.Copy(file.FullPath, newPath, overwriteExisting);
+                }
+                else
+                {
+                    // copy to different directory
+                    if (!Directory.Exists(destinationPath))
+                        Directory.CreateDirectory(destinationPath);
+
+                    if ((!File.Exists(newPath)) || (File.Exists(newPath) && overwriteExisting))
+                        File.Copy(file.FullPath, newPath, overwriteExisting);
+                }
             }
-            else
+        }
+    }
+
+    private void btnExit_Click(object sender, EventArgs e)
+    {
+        this.Close();
+    }
+
+    private void btnLoadRuleset_Click(object sender, EventArgs e)
+    {
+        OpenFileDialog openFileDialog = new OpenFileDialog()
+        {
+            DefaultExt = "json",
+            InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
+        };
+
+        if (openFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            string fileName = openFileDialog.FileName;
+            StringBuilder rulesetText = new StringBuilder();
+            txtRulesetFilename.Text = fileName;
+
+            if (File.Exists(fileName))
             {
-                // copy to different directory
-                if (!Directory.Exists(destinationPath)) 
-                    Directory.CreateDirectory(destinationPath);
-                
-                if ( (!File.Exists(newPath)) || (File.Exists(newPath) && overwriteExisting) ) 
-                    File.Copy(file.FullPath,newPath,overwriteExisting);
+                using (StreamReader streamReader = new StreamReader(fileName))
+                {
+                    txtRulesetPreview.Text = streamReader.ReadToEnd();
+                }
             }
 
-            /* TODO: 
-             * get some sort of UX together
-             */
+        }
+    }
+
+    private void btnDirSelect_Click(object sender, EventArgs e)
+    {
+        FolderBrowserDialog dialog = new FolderBrowserDialog()
+        {
+            InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
+        };
+
+        if (dialog.ShowDialog() == DialogResult.OK)
+        {
+            txtDirectory.Text = dialog.SelectedPath;
+        }
+    }
+
+    private void btnSelectCopyDirectory_Click(object sender, EventArgs e)
+    {
+        FolderBrowserDialog dialog = new FolderBrowserDialog()
+        {
+            InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
+        };
+
+        if (dialog.ShowDialog() == DialogResult.OK)
+        {
+            txtCopyDirectory.Text = dialog.SelectedPath;
         }
     }
 }

@@ -35,6 +35,13 @@
         "(?<=[a-z])(?=[A-Z])"
       ],
       "Replace": " "
+    },
+    {
+      "_comment": "Replace lower-case xx with XX",
+      "Find": [
+        "xx"
+      ],
+      "Replace": "XX"
     }
   ]
 }
