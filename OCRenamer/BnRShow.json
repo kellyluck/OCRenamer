@@ -1,0 +1,92 @@
+{
+  "Rules": [
+    {
+      "_comment": "Simple text replace",
+      "Find": [
+        "Bob And Ray ",
+        "Bob and Ray ",
+        "Bob And Ray Show "
+      ],
+      "Replace": "Bob & Ray "
+    },
+    {
+      "_comment": "Rename months (n.b.: be sure to do these first so the reshuffle rule below will work)",
+      "Find": [
+        "Sept "
+      ],
+      "Replace": "09 "
+    },
+    {
+      "_comment": "Rename months",
+      "Find": [
+        "Oct "
+      ],
+      "Replace": "10 "
+    },
+    {
+      "_comment": "Reshuffle MM YY DDDD date to YYYY-MM-DD",
+      "Find": [
+        "\\b(\\d{1,2})\\s+(\\d{1,2})\\s+(\\d{4})\\b"
+      ],
+      "Replace": "$3-$1-$2"
+    },
+    {
+      "_comment": "Convert YY-MM-DD to 19YY-MM-DD",
+      "Find": [
+        "\\s(\\d{2})-(\\d{2})-(\\d{2})"
+      ],
+      "Replace": " 19$1-$2-$3"
+    },
+    {
+      "_comment": "Finds 6 consecutive digits, breaks them into 3 sets of 2, and reformats them as a more readable date",
+      "Find": [
+        "(?<!\\d)(\\d{2})(\\d{2})(\\d{2})(?!\\d)"
+      ],
+      "Replace": "19$1-$2-$3 "
+    },
+    {
+      "_comment": "Finds a date of YYYY.MM.DD and changes to YYYY-MM-DD",
+      "Find": [
+        "(\\d{4})\\.(\\d{2})\\.(\\d{2})"
+      ],
+      "Replace": "$1-$2-$3"
+    },
+    {
+      "_comment": "Finds a date of YYYY.xx.xx and changes to YYYY-xx-xx (or 'XX', it's case insensitive)",
+      "Find": [
+        "(\\d{4})[-\\.](\\d{2}|xx|XX)[-\\.](\\d{2}|xx|XX)"
+      ],
+      "Replace": "$1-$2-$3"
+    },
+    {
+      "_comment": "Finds a capital letter immediately preceded by a lower-case, and inserts a space ('FooBar' -> 'Foo Bar')",
+      "Find": [
+        "(?<=[a-z])(?=[A-Z])"
+      ],
+      "Replace": " "
+    },
+    {
+      "_comment": "Replace lower-case xx with XX",
+      "Find": [
+        "xx"
+      ],
+      "Replace": "XX"
+    },
+    {
+      "_comment": "Change ' XX-XX-XX' to '19XX-XX-XX'",
+      "Find": [
+        "XX-XX-XX"
+      ],
+      "Replace": "19XX-XX-XX"
+    },
+    {
+      "_comment": "Ditch orphan )s",
+      "Find": [
+        "(?<!\\() \\)"
+      ],
+      "Replace": ""
+    }
+  ]
+}
+
+

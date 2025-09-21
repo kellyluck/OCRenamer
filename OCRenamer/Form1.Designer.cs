@@ -51,6 +51,7 @@
             // 
             // btnGo
             // 
+            btnGo.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnGo.BackColor = Color.Lime;
             btnGo.Location = new Point(632, 491);
             btnGo.Name = "btnGo";
@@ -62,6 +63,7 @@
             // 
             // btnExit
             // 
+            btnExit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnExit.BackColor = Color.Red;
             btnExit.ForeColor = Color.White;
             btnExit.Location = new Point(713, 491);
@@ -74,6 +76,7 @@
             // 
             // txtRulesetPreview
             // 
+            txtRulesetPreview.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtRulesetPreview.Location = new Point(12, 80);
             txtRulesetPreview.Multiline = true;
             txtRulesetPreview.Name = "txtRulesetPreview";
@@ -93,6 +96,7 @@
             // 
             // btnLoadRuleset
             // 
+            btnLoadRuleset.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnLoadRuleset.BackColor = SystemColors.Control;
             btnLoadRuleset.Location = new Point(326, 12);
             btnLoadRuleset.Name = "btnLoadRuleset";
@@ -104,11 +108,12 @@
             // 
             // txtRulesetFilename
             // 
+            txtRulesetFilename.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtRulesetFilename.Location = new Point(78, 14);
             txtRulesetFilename.Name = "txtRulesetFilename";
             txtRulesetFilename.Size = new Size(242, 27);
             txtRulesetFilename.TabIndex = 5;
-            txtRulesetFilename.Text = "F:\\Documents\\Source\\Repos\\kellyluck\\OCRenamer\\OCRenamer\\MatineeBnR.json";
+            txtRulesetFilename.Text = "F:\\Documents\\Source\\Repos\\kellyluck\\OCRenamer\\OCRenamer\\BnRShow.json";
             // 
             // label2
             // 
@@ -121,6 +126,7 @@
             // 
             // label3
             // 
+            label3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label3.AutoSize = true;
             label3.Location = new Point(407, 17);
             label3.Name = "label3";
@@ -130,6 +136,7 @@
             // 
             // btnDirSelect
             // 
+            btnDirSelect.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnDirSelect.Location = new Point(713, 12);
             btnDirSelect.Name = "btnDirSelect";
             btnDirSelect.Size = new Size(75, 31);
@@ -140,14 +147,16 @@
             // 
             // txtDirectory
             // 
+            txtDirectory.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             txtDirectory.Location = new Point(454, 14);
             txtDirectory.Name = "txtDirectory";
             txtDirectory.Size = new Size(253, 27);
             txtDirectory.TabIndex = 9;
-            txtDirectory.Text = "I:\\Radio Programs\\Bob & Ray\\Matinee With Bob Ray";
+            txtDirectory.Text = "I:\\Radio Programs\\Bob & Ray\\Unsorted";
             // 
             // groupBox1
             // 
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             groupBox1.Controls.Add(rbCopy);
             groupBox1.Controls.Add(txtCopyDirectory);
             groupBox1.Controls.Add(btnSelectCopyDirectory);
@@ -179,7 +188,7 @@
             txtCopyDirectory.Name = "txtCopyDirectory";
             txtCopyDirectory.Size = new Size(269, 27);
             txtCopyDirectory.TabIndex = 12;
-            txtCopyDirectory.Text = "I:\\Radio Programs\\Bob & Ray\\Matinee With Bob Ray\\RenameUs";
+            txtCopyDirectory.Text = "I:\\Radio Programs\\Bob & Ray\\Unsorted\\Renamed";
             // 
             // btnSelectCopyDirectory
             // 
@@ -225,6 +234,7 @@
             // 
             // lstLog
             // 
+            lstLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lstLog.FormattingEnabled = true;
             lstLog.Location = new Point(12, 244);
             lstLog.Name = "lstLog";
@@ -248,6 +258,7 @@
             Controls.Add(txtRulesetPreview);
             Controls.Add(btnExit);
             Controls.Add(btnGo);
+            MinimumSize = new Size(816, 573);
             Name = "Form1";
             Text = "The Overly Complicated Renamer (tm)";
             groupBox1.ResumeLayout(false);
